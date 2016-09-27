@@ -7,9 +7,11 @@ package reactgame.services;
 
 /**
  *
- * @author Ольга
+ * @author Roman
  */
-public class GameStats {
-    public static int GAME_HARDEST_LEVEL = 1;
-    public static double LEVEL_TIME = 1;    
+public class Shape {
+    public static final int SQUARE = 1;
+    public static final int CIRCLE = 2;
+    public static final int TRIANGLE = 3;
+    
 }

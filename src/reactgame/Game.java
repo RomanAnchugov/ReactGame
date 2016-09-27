@@ -29,6 +29,7 @@ public class Game extends Canvas implements Runnable{
     public static int WIDTH = 700;
     public static int HEIGHT = 500;
     
+    private Generator generator;
     
     public static void main(String[] args) {
         Game game = new Game();
@@ -52,7 +53,7 @@ public class Game extends Canvas implements Runnable{
     }
     
     private void init(){
-        new Generator();
+        generator = new Generator(this);
     }
     
     private void update(){
@@ -72,7 +73,7 @@ public class Game extends Canvas implements Runnable{
 	g.setColor(new Color(62,39,35)); //выбрать цвет - 900
 	g.fillRect(0, 0, getWidth(), getHeight()); //заполнить прямоугольник 
         //render
-        
+        generator.render(g);       
         //render
 	g.dispose();
 	bs.show(); //показать        
