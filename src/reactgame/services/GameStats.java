@@ -10,6 +10,8 @@ package reactgame.services;
  * @author Ольга
  */
 public class GameStats {
+    public static int GAME_STATE = 2;//1 menu, 2 - play
     public static int GAME_HARDEST_LEVEL = 1;
-    public static double LEVEL_TIME = 1;    
+    public static double LEVEL_TIME = 2;   
+    public static boolean LOSE = false;
 }

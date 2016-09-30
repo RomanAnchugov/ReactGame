@@ -12,7 +12,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import reactgame.Game;
-import reactgame.tasks.Size;
+import reactgame.tasks.FakeTask;
+import reactgame.tasks.TrueTask;
 
 /**
  *
@@ -23,8 +24,11 @@ public class Generator implements Runnable, Renderer{
     private boolean generation = false;
     private Random r;
     private Game game;
+    private Thread thread;
     
-    private ArrayList<Size> list;
+    private TrueTask trueTask;
+    private FakeTask fakeTask;
+        
     
     public Generator(Game game){        
         this.game = game;
@@ -34,44 +38,36 @@ public class Generator implements Runnable, Renderer{
     
     public void start(){
         generation = true;
-        new Thread(this).start();
+        thread = new Thread(this);
+        thread.start();
     }
     
     public void init(){
-        r = new Random();
-        list = new ArrayList<Size>();
+        r = new Random(); 
+        
+        trueTask = new TrueTask(1, 100, new Color(134, 124, 255));//type color size
+        fakeTask = new FakeTask(trueTask);
     }
     
     public void generate(int r){
-//        switch(r){
-//            case 1:
-//                System.out.println("1");
-//                break;
-//            case 2:
-//                System.out.println("2");
-//                break;
-//            case 3:
-//                System.out.println("3");
-//                break;
-//            case 4:
-//                System.out.println("4");
-//                break;
-//            default:
-//                System.out.println("def");
-//                break;
-//        }
-        Size size = new Size(Shape.CIRCLE, new Color(188,170,164), 30, 30);
-        game.addMouseListener(size);
-        list.add(size);        
+        trueTask.rmk(r);
+        fakeTask.rmk();
     }
     
     @Override
     public void run() {
         init();
         while(generation){
-            try {
-                Thread.sleep((long) (GameStats.LEVEL_TIME * 1000));
-                generate(r.nextInt(4) + 1);
+            try {                
+                if(!GameStats.LOSE){                    
+                    Thread.sleep((long) (GameStats.LEVEL_TIME * 1000));
+                    generate(1);//generate(r.nextInt(4) + 1);
+                }else{                                   
+                    System.out.println("reactgame.services.Generator.run() - LOSE");
+                    generation = false;
+                    thread.interrupt();
+                }
+                
             } catch (InterruptedException ex) {
                 Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -80,10 +76,8 @@ public class Generator implements Runnable, Renderer{
     }
 
     @Override
-    public void render(Graphics g) {
-        for(int i = 0; i < list.size(); i++){
-            list.get(i).render(g);
-        }
+    public void render(Graphics g) {        
+        fakeTask.render(g);
     }
 
     @Override
