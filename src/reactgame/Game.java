@@ -57,7 +57,7 @@ public class Game extends Canvas implements Runnable{
     }
     
     private void update(){
-        
+        generator.update();
     }
     
     private void render(){

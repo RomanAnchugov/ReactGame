@@ -6,6 +6,7 @@
 package reactgame.tasks;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -21,16 +22,22 @@ import static reactgame.services.TaskType.*;
  *
  * @author Roman
  */
-public class FakeTask extends MouseAdapter implements Renderer{
+public class FakeTask implements Renderer{
  
     private int type;
     private TrueTask trueTask;
     private ArrayList<Point> coords;
     private Color color; 
     
+    //type 2;
+    private Font font;
+    private int digitDifference;
+    
     public FakeTask(TrueTask trueTask){        
         this.trueTask = trueTask;
         this.type = trueTask.getType();
+        this.font = trueTask.getFont();
+        digitDifference = new Random().nextInt(10) + 10;
         coords = new ArrayList<Point>();
         if(type != 4){
             this.color = trueTask.getColor();
@@ -43,7 +50,8 @@ public class FakeTask extends MouseAdapter implements Renderer{
     }
 
     public void rmk(){
-        this.type = trueTask.getType();        
+        this.type = trueTask.getType();  
+        digitDifference = new Random().nextInt(10) + 3;
         color = trueTask.getColor();
         coords.clear();
         for(int i = 0; i < GAME_HARDEST_LEVEL + 2; i++){
@@ -60,6 +68,15 @@ public class FakeTask extends MouseAdapter implements Renderer{
                     g.fillOval(coords.get(i).getPosX(), coords.get(i).getPosY(), trueTask.getSize(), trueTask.getSize());
                 }
             }
+            if(type == DIGIT){
+                for(int i = 0; i < coords.size(); i++){  
+                    g.setColor(color);
+                    g.fillOval(coords.get(i).getPosX(), coords.get(i).getPosY(), trueTask.getSize(), trueTask.getSize());
+                    g.setColor(Color.white);
+                    g.setFont(font);            
+                    g.drawString((trueTask.getDigit() + digitDifference) + "", coords.get(i).getPosX() + trueTask.getSize() / 2 - 15, coords.get(i).getPosY() + trueTask.getSize() / 2 + 15);
+                }
+            }
         }
     }
 
@@ -67,5 +84,6 @@ public class FakeTask extends MouseAdapter implements Renderer{
     public void update() {
         
     }
+    
     
 }
