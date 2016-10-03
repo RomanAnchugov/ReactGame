@@ -17,6 +17,7 @@ import static reactgame.services.GameStats.GAME_HARDEST_LEVEL;
 import static reactgame.services.GameStats.LEVEL_TIME;
 import reactgame.services.Generator;
 import reactgame.services.Renderer;
+import static reactgame.services.TaskType.COLOR;
 import static reactgame.services.TaskType.DIGIT;
 import static reactgame.services.TaskType.SIZE;
 
@@ -44,6 +45,8 @@ public class TrueTask extends MouseAdapter implements Renderer{
     private int digit;
     private Font font;
     
+    //type = 3 - разные цвета
+    
     
     public TrueTask(int type, int size, Color color, Generator generator){
         this.generator = generator;
@@ -57,8 +60,7 @@ public class TrueTask extends MouseAdapter implements Renderer{
         sizeDifference = new Random().nextInt(15) + 15;
         //type - 2
         digit = new Random().nextInt(100) - 50;
-        font = new Font("sans", 1, 30);
-        
+        font = new Font("sans", 1, 30);        
     }
     
     public void rmk(int type){
@@ -75,7 +77,11 @@ public class TrueTask extends MouseAdapter implements Renderer{
         color = new Color(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
         posX = new Random().nextInt(WIDTH - size);
         posY = new Random().nextInt(HEIGHT - size);
-        sizeDifference = new Random().nextInt(15) + 10;
+        if(type == SIZE){
+            sizeDifference = new Random().nextInt(15) + 10;
+        }else{
+            sizeDifference = 0;
+        }
         digit = new Random().nextInt(100) - 50;
     }
 
@@ -103,6 +109,10 @@ public class TrueTask extends MouseAdapter implements Renderer{
             g.setColor(Color.white);
             g.setFont(font);            
             g.drawString(digit + "", posX + size / 2 - 15, posY + size / 2 + 15);
+        }
+        if(type == COLOR){
+            g.setColor(color);
+            g.fillOval(posX, posY, size, size);
         }
     }
 

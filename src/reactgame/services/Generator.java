@@ -51,7 +51,7 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
     public void init(){
         r = new Random(); 
         
-        trueTask = new TrueTask(1, 100, new Color(134, 124, 255), this);//type color size generator
+        trueTask = new TrueTask(2, 100, new Color(134, 124, 255), this);//type color size generator
         game.addMouseListener(trueTask);
         game.addMouseListener(this);
         fakeTask = new FakeTask(trueTask);
@@ -67,7 +67,7 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
     
     public void click() {           
         trueTask.setClicked(false);
-        generate(r.nextInt(2) + 1);//generate(r.nextInt(4) + 1);
+        generate(r.nextInt(3) + 1);//generate(r.nextInt(4) + 1);
         curLevelTime = LEVEL_TIME;
     }
             

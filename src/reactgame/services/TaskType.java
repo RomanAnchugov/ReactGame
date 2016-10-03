@@ -12,6 +12,6 @@ package reactgame.services;
 public class TaskType {//класс который содержит типы заданий
     public static int SIZE = 1;//разный размер
     public static int DIGIT = 2;//разные числа
-    public static int SHAPE = 3;//разные фигуры
-    public static int COLOR = 4;//разный цвет
+    public static int SHAPE = 4;//разные фигуры
+    public static int COLOR = 3;//разный цвет
 }
