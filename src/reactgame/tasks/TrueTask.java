@@ -17,8 +17,11 @@ import static reactgame.services.GameStats.GAME_HARDEST_LEVEL;
 import static reactgame.services.GameStats.LEVEL_TIME;
 import reactgame.services.Generator;
 import reactgame.services.Renderer;
+import static reactgame.services.Shape.CIRCLE;
+import static reactgame.services.Shape.SQUARE;
 import static reactgame.services.TaskType.COLOR;
 import static reactgame.services.TaskType.DIGIT;
+import static reactgame.services.TaskType.SHAPE;
 import static reactgame.services.TaskType.SIZE;
 
 /**
@@ -46,6 +49,8 @@ public class TrueTask extends MouseAdapter implements Renderer{
     private Font font;
     
     //type = 3 - разные цвета
+    //type = 4 - разные фигуры
+    private int shape;
     
     
     public TrueTask(int type, int size, Color color, Generator generator){
@@ -60,7 +65,9 @@ public class TrueTask extends MouseAdapter implements Renderer{
         sizeDifference = new Random().nextInt(15) + 15;
         //type - 2
         digit = new Random().nextInt(100) - 50;
-        font = new Font("sans", 1, 30);        
+        font = new Font("sans", 1, 30); 
+        //type -4
+        shape = new Random().nextInt(2) + 1;
     }
     
     public void rmk(int type){
@@ -82,6 +89,7 @@ public class TrueTask extends MouseAdapter implements Renderer{
         }else{
             sizeDifference = 0;
         }
+        shape = new Random().nextInt(2) + 1;
         digit = new Random().nextInt(100) - 50;
     }
 
@@ -114,6 +122,14 @@ public class TrueTask extends MouseAdapter implements Renderer{
             g.setColor(color);
             g.fillOval(posX, posY, size, size);
         }
+        if(type == SHAPE){
+            g.setColor(color);
+            if(shape == CIRCLE){
+                g.fillOval(posX, posY, size, size);
+            }else if(shape == SQUARE){
+                g.fillRect(posX, posY, size, size);
+            }
+        }
     }
 
     @Override
@@ -140,6 +156,9 @@ public class TrueTask extends MouseAdapter implements Renderer{
     }
     public boolean getClicked(){
         return clicked;
+    }
+    public int getShape(){
+        return shape;
     }
     public void setClicked(boolean clicked){
         this.clicked = clicked;

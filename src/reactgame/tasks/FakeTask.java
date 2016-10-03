@@ -16,6 +16,8 @@ import static reactgame.Game.WIDTH;
 import static reactgame.services.GameStats.*;
 import reactgame.services.Point;
 import reactgame.services.Renderer;
+import static reactgame.services.Shape.CIRCLE;
+import static reactgame.services.Shape.SQUARE;
 import static reactgame.services.TaskType.*;
 
 /**
@@ -32,6 +34,7 @@ public class FakeTask implements Renderer{
     //type 2;
     private Font font;
     private int digitDifference;
+    //type 4    
     
     public FakeTask(TrueTask trueTask){        
         this.trueTask = trueTask;
@@ -88,6 +91,19 @@ public class FakeTask implements Renderer{
                 for(int i = 0; i < coords.size(); i++){  
                     g.setColor(color);
                     g.fillOval(coords.get(i).getPosX(), coords.get(i).getPosY(), trueTask.getSize(), trueTask.getSize());                    
+                }
+            }
+            if(type == SHAPE){
+                if(trueTask.getShape() == CIRCLE){
+                    for(int i = 0; i < coords.size(); i++){  
+                        g.setColor(color);
+                        g.fillRect(coords.get(i).getPosX(), coords.get(i).getPosY(), trueTask.getSize(), trueTask.getSize());                    
+                    }
+                }else if(trueTask.getShape() == SQUARE){
+                    for(int i = 0; i < coords.size(); i++){  
+                        g.setColor(color);
+                        g.fillOval(coords.get(i).getPosX(), coords.get(i).getPosY(), trueTask.getSize(), trueTask.getSize());                    
+                    }
                 }
             }
         }
