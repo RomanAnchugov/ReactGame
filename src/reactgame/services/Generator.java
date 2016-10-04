@@ -14,7 +14,12 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import reactgame.Game;
+import static reactgame.Game.HEIGHT;
+import static reactgame.Game.WIDTH;
+import reactgame.menu.Btn;
+import reactgame.menu.PlayBtn;
 import static reactgame.services.GameStats.LEVEL_TIME;
+import static reactgame.services.GameStats.LOSE;
 import reactgame.tasks.FakeTask;
 import reactgame.tasks.TrueTask;
 
@@ -35,6 +40,9 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
     private ShowTime showTime;
         
     
+    //ui
+    private PlayBtn btnPlay;
+    
     public Generator(Game game){ 
         this.game = game;
         init();        
@@ -51,12 +59,16 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
     public void init(){
         r = new Random(); 
         
-        trueTask = new TrueTask(4, 100, new Color(134, 124, 255), this);//type color size generator
-        game.addMouseListener(trueTask);
-        game.addMouseListener(this);
+        trueTask = new TrueTask(2, 100, new Color(134, 124, 255), this);//type color size generator        
         fakeTask = new FakeTask(trueTask);
         
         showTime = new ShowTime();
+        
+        btnPlay = new PlayBtn(150, 60, WIDTH / 2 - 50, HEIGHT / 2 - 15, "PLAY", trueTask, fakeTask, showTime);
+        
+        game.addMouseListener(trueTask);
+        game.addMouseListener(this);
+        game.addMouseListener(btnPlay);
     }
     
     public void generate(int r){
@@ -74,9 +86,10 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
     @Override
     public void run() {
         init();
-        while(generation){
-            try {                
-                if(!GameStats.LOSE){                                        
+        while(generation){ 
+            System.out.println("reactgame.services.Generator.run()");
+            try {    
+                if(!LOSE){                    
                     curLevelTime = LEVEL_TIME;
                     while(curLevelTime > 0){//Уменьшение полоски                                                
                         curLevelTime -= 0.1;
@@ -85,13 +98,8 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
                     }  
                     if(curLevelTime <= 0 && !trueTask.getClicked()){
                         GameStats.LOSE = true;                        
-                    }
-                }else{                                   
-                    System.out.println("reactgame.services.Generator.run() - LOSE");
-                    generation = false;
-                    thread.interrupt();
+                    }         
                 }
-                
             } catch (InterruptedException ex) {
                 Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -101,10 +109,13 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
 
     @Override
     public void render(Graphics g) { 
-        if(!GameStats.LOSE){            
+        if(!LOSE){            
             fakeTask.render(g);
             showTime.render(g);
             trueTask.render(g);
+        }
+        if(LOSE){
+           btnPlay.render(g);
         }
         
     }

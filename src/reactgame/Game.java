@@ -16,6 +16,7 @@ import static java.awt.image.ImageObserver.WIDTH;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import static reactgame.services.GameStats.LOSE;
 import reactgame.services.Generator;
 
 /**
@@ -72,7 +73,7 @@ public class Game extends Canvas implements Runnable{
 	Graphics g = bs.getDrawGraphics(); //получаем Graphics из созданной нами BufferStrategy
 	g.setColor(new Color(62,39,35)); //выбрать цвет - 900
 	g.fillRect(0, 0, getWidth(), getHeight()); //заполнить прямоугольник 
-        //render
+        //render        
         generator.render(g);       
         //render
 	g.dispose();

@@ -74,7 +74,7 @@ public class TrueTask extends MouseAdapter implements Renderer{
         if(GAME_HARDEST_LEVEL < 7){
             GAME_HARDEST_LEVEL += new Random().nextInt(100) % 2;
         }
-        if(LEVEL_TIME > 1.7){
+        if(LEVEL_TIME > 1.5){
             LEVEL_TIME -= 0.05;
         }
         this.type = type;
