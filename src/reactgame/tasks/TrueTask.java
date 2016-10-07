@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 import static reactgame.Game.HEIGHT;
 import static reactgame.Game.WIDTH;
+import reactgame.services.GameStats;
 import static reactgame.services.GameStats.GAME_HARDEST_LEVEL;
 import static reactgame.services.GameStats.LEVEL_TIME;
 import reactgame.services.Generator;
@@ -96,7 +97,8 @@ public class TrueTask extends MouseAdapter implements Renderer{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getX() >= posX && e.getX() <= posX + size + sizeDifference &&
-                e.getY() >= posY && e.getY() <= posY + size + sizeDifference){                        
+                e.getY() >= posY && e.getY() <= posY + size + sizeDifference){
+                GameStats.SCORE++;
                 clicked = true;
                 generator.click();
         }else{

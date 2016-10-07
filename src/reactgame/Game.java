@@ -51,7 +51,7 @@ public class Game extends Canvas implements Runnable{
     private void start(){
         running = true;
         new Thread(this).start();        
-    }
+    }        
     
     private void init(){
         generator = new Generator(this);

@@ -9,17 +9,26 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import reactgame.Game;
 import static reactgame.Game.HEIGHT;
 import static reactgame.Game.WIDTH;
+import reactgame.menu.BestScore;
 import reactgame.menu.Btn;
+import reactgame.menu.HelpTxt;
 import reactgame.menu.PlayBtn;
 import static reactgame.services.GameStats.LEVEL_TIME;
 import static reactgame.services.GameStats.LOSE;
+import static reactgame.services.GameStats.SCORE;
 import reactgame.tasks.FakeTask;
 import reactgame.tasks.TrueTask;
 
@@ -40,8 +49,10 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
     private ShowTime showTime;
         
     
-    //ui
+    //ui menu
     private PlayBtn btnPlay;
+    private HelpTxt helpText;
+    private BestScore bestScore;
     
     public Generator(Game game){ 
         this.game = game;
@@ -58,13 +69,16 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
     
     public void init(){
         r = new Random(); 
+                
         
         trueTask = new TrueTask(2, 100, new Color(134, 124, 255), this);//type color size generator        
         fakeTask = new FakeTask(trueTask);
         
         showTime = new ShowTime();
         
-        btnPlay = new PlayBtn(150, 60, WIDTH / 2 - 50, HEIGHT / 2 - 15, "PLAY", trueTask, fakeTask, showTime);
+        btnPlay = new PlayBtn(150, 60, WIDTH / 2 - 75, HEIGHT / 2 - 30, "PLAY", trueTask, fakeTask, showTime);
+        helpText = new HelpTxt("Выбирай лишнее", 150, 70, 48);//str posX posY size
+        bestScore = new BestScore(250, 350, 18);//posX posY size
         
         game.addMouseListener(trueTask);
         game.addMouseListener(this);
@@ -97,10 +111,16 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
                         Thread.sleep(100);
                     }  
                     if(curLevelTime <= 0 && !trueTask.getClicked()){
-                        GameStats.LOSE = true;                        
+                        bestScore.setScore(SCORE + "");
+                        GameStats.LOSE = true;   
+                        BufferedWriter wr = new BufferedWriter(new FileWriter("bestResult.txt"));
+                        wr.write(SCORE + "");
+                        wr.close();                        
                     }         
                 }
             } catch (InterruptedException ex) {
+                Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -116,13 +136,14 @@ public class Generator extends MouseAdapter implements Runnable, Renderer{
         }
         if(LOSE){
            btnPlay.render(g);
-        }
-        
+           helpText.render(g);
+           bestScore.render(g);
+        }                
     }
 
     @Override
     public void update() {
-        
+        helpText.update();
     }
     
 }
